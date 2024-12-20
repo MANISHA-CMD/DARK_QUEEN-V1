@@ -1,107 +1,12 @@
-const { fetchJson } = require('../lib/functions')
-const config = require('../config')
-const { cmd, commands } = require('../command')
+/*
+██████╗  █████╗ ██████╗ ██╗  ██╗         ██████╗ ██╗   ██╗███████╗███████╗███╗   ██╗      ██╗   ██╗ ██╗
+██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝        ██╔═══██╗██║   ██║██╔════╝██╔════╝████╗  ██║      ██║   ██║███║
+██║  ██║███████║██████╔╝█████╔╝         ██║   ██║██║   ██║█████╗  █████╗  ██╔██╗ ██║█████╗██║   ██║╚██║
+██║  ██║██╔══██║██╔══██╗██╔═██╗         ██║▄▄ ██║██║   ██║██╔══╝  ██╔══╝  ██║╚██╗██║╚════╝╚██╗ ██╔╝ ██║
+██████╔╝██║  ██║██║  ██║██║  ██╗███████╗╚██████╔╝╚██████╔╝███████╗███████╗██║ ╚████║       ╚████╔╝  ██║
+╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ╚══▀▀═╝  ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═══╝        ╚═══╝   ╚═╝                                                                                                       
+creare by manisha sasmitha 
+whatsapp number:94721551183
+*/
 
-//====your bot name=======
-let cap = 'ᴅᴀʀᴋ_Qᴜᴇᴇɴ-ᴠ1'
-
-// <========FETCH API URL========>
-let baseUrl;
-(async () => {
-    let baseUrlGet = await fetchJson(`https://raw.githubusercontent.com/prabathLK/PUBLIC-URL-HOST-DB/main/public/url.json`)
-    baseUrl = baseUrlGet.api
-})();
-
-
-//fb downloader
-cmd({
-    pattern: "fb",
-    alias: ["facebook"],
-    desc: "download fb videos",
-    category: "download",
-    filename: __filename
-},
-async(conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        if (!q && !q.startsWith("https://")) return reply("give me fb url")
-        //fetch data from api  
-        let data = await fetchJson(`${baseUrl}/api/fdown?url=${q}`)
-        reply("*Hi.\n\n*••《《Thenu-MD-FB-DL》》••📡.*\n\n*🔭Downloading*...\n\n> ☆Thenu_MD")
-        //send video (hd,sd)
-        await conn.sendMessage(from, { video: { url: data.data.hd }, mimetype: "video/mp4", caption: `- QUALITY HD\n\n> ${cap}` }, { quoted: mek })
-        await conn.sendMessage(from, { video: { url: data.data.sd }, mimetype: "video/mp4", caption: `- QUALITY SD \n\n> ${cap}` }, { quoted: mek })  
-    } catch (e) {
-        console.log(e)
-        reply(`${e}`)
-    }
-})
-
-
-//twitter dl (x)
-cmd({
-    pattern: "twitter",
-    alias: ["twdl"],
-    desc: "download tw videos",
-    category: "download",
-    filename: __filename
-},
-async(conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        if (!q && !q.startsWith("https://")) return reply("give me twitter url")
-        //fetch data from api  
-        let data = await fetchJson(`${baseUrl}/api/twitterdl?url=${q}`)
-        reply("*《《THENU-MD-Twitter-DL》》\n\n*Downloading.🎷..\n> ♡Thenula*")
-        //send video (hd,sd)
-        await conn.sendMessage(from, { video: { url: data.data.data.HD }, mimetype: "video/mp4", caption: `- QUALITY HD\n\n> ${cap}` }, { quoted: mek })
-        await conn.sendMessage(from, { video: { url: data.data.data.SD }, mimetype: "video/mp4", caption: `- QUALITY SD \n\n> ${cap}` }, { quoted: mek })  
-        //send audio    
-        await conn.sendMessage(from, { audio: { url: data.data.data.audio }, mimetype: "audio/mpeg" }, { quoted: mek })  
-    } catch (e) {
-        console.log(e)
-        reply(`${e}`)
-    }
-})
-
-//gdrive(google drive) dl
-cmd({
-    pattern: "gdrive",
-    alias: ["googledrive"],
-    desc: "download gdrive files",
-    category: "download",
-    filename: __filename
-},
-async(conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        if (!q && !q.startsWith("https://")) return reply("give me gdrive url")
-        //fetch data from api  
-        let data = await fetchJson(`${baseUrl}/api/gdrivedl?url=${q}`)
-        reply("*🧚Downloading...*")
-        await conn.sendMessage(from, { document: { url: data.data.download }, fileName: data.data.fileName, mimetype: data.data.mimeType, caption: cap }, { quoted: mek })                                                                                                                 
-    } catch (e) {
-        console.log(e)
-        reply(`${e}`)
-    }
-})
-
-//mediafire dl
-cmd({
-    pattern: "mediafire",
-    alias: ["mfire"],
-    desc: "download mfire files",
-    category: "download",
-    filename: __filename
-},
-async(conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        if (!q && !q.startsWith("https://")) return reply("give me mediafire url")
-        //fetch data from api  
-        let data = await fetchJson(`${baseUrl}/api/mediafiredl?url=${q}`)
-        reply("*《《Thenu-MD-MF-DL》》\n\n*🧚Downloading...*")
-        await conn.sendMessage(from, { document: { url: data.data.link_1 }, fileName: data.data.name, mimetype: data.data.file_type, caption: cap }, { quoted: mek })                                                                                                                 
-    } catch (e) {
-        console.log(e)
-        reply(`${e}`)
-    }
-})
-
-
+function _0x2ae9(_0x249902,_0x41f7d7){const _0x3cb811=_0x3cb8();return _0x2ae9=function(_0x2ae946,_0x4c20bf){_0x2ae946=_0x2ae946-0x1bf;let _0x243a04=_0x3cb811[_0x2ae946];return _0x243a04;},_0x2ae9(_0x249902,_0x41f7d7);}const _0x470156=_0x2ae9;(function(_0x3c71ce,_0x6be1b4){const _0xa808ec=_0x2ae9,_0x4b2e9c=_0x3c71ce();while(!![]){try{const _0x2a1a1e=-parseInt(_0xa808ec(0x1c6))/0x1*(-parseInt(_0xa808ec(0x1d0))/0x2)+parseInt(_0xa808ec(0x1c1))/0x3+parseInt(_0xa808ec(0x1c5))/0x4*(parseInt(_0xa808ec(0x1c4))/0x5)+parseInt(_0xa808ec(0x1c8))/0x6*(-parseInt(_0xa808ec(0x1c3))/0x7)+-parseInt(_0xa808ec(0x1cd))/0x8*(-parseInt(_0xa808ec(0x1c0))/0x9)+-parseInt(_0xa808ec(0x1c7))/0xa+-parseInt(_0xa808ec(0x1cb))/0xb*(parseInt(_0xa808ec(0x1bf))/0xc);if(_0x2a1a1e===_0x6be1b4)break;else _0x4b2e9c['push'](_0x4b2e9c['shift']());}catch(_0x5eb6ec){_0x4b2e9c['push'](_0x4b2e9c['shift']());}}}(_0x3cb8,0x2c422));const config=require(_0x470156(0x1c9)),{cmd,commands}=require(_0x470156(0x1d1)),{fetchJson}=require(_0x470156(0x1ca));cmd({'pattern':'ai','alias':['gpt','bot'],'react':'📑','desc':_0x470156(0x1c2),'category':_0x470156(0x1cc),'filename':__filename},async(_0x1c28ce,_0x340275,_0x208ade,{from:_0x1c9e4d,quoted:_0x95932f,body:_0x33a3d5,isCmd:_0x5e4183,command:_0xf138c8,args:_0x546b5b,q:_0x505734,isGroup:_0x38af6b,sender:_0x352e26,senderNumber:_0xc9bda5,botNumber2:_0x148c25,botNumber:_0x3278db,pushname:_0x47009c,isMe:_0x4ffbd1,isOwner:_0x4b4dbb,groupMetadata:_0x54b408,groupName:_0x34684c,participants:_0x38b940,groupAdmins:_0x32a773,isBotAdmins:_0x1c90f0,isAdmins:_0x58c35,reply:_0x4c8ca7})=>{const _0x46eb6f=_0x470156;try{let _0x3881d5=await fetchJson(_0x46eb6f(0x1ce)+_0x505734);return _0x4c8ca7(''+_0x3881d5['data']);}catch(_0x54c760){console[_0x46eb6f(0x1cf)](_0x54c760),_0x4c8ca7(''+_0x54c760);}});function _0x3cb8(){const _0x3a49f1=['ai\x20chat.','105nMVcSS','1646375JLmIhY','4CUhAkS','237317CKlKrr','1596240EiGXbY','74388YkXSDi','../config','../lib/functions','2145mjQprR','main','693160HHCgYB','https://chatgptforprabath-md.vercel.app/api/gptv1?q=','log','2DbxDDz','../command','23208ZlQiOQ','18kogbnr','492372bYjclq'];_0x3cb8=function(){return _0x3a49f1;};return _0x3cb8();}
